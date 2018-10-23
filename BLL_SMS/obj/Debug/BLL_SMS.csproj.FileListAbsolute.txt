@@ -1,0 +1,10 @@
+E:\old_Laptop\NewLIS\ERP\ERP\BLL_SMS\bin\Debug\BLL_SMS.dll.config
+E:\old_Laptop\NewLIS\ERP\ERP\BLL_SMS\bin\Debug\BLL_SMS.dll
+E:\old_Laptop\NewLIS\ERP\ERP\BLL_SMS\bin\Debug\BLL_SMS.pdb
+E:\old_Laptop\NewLIS\ERP\ERP\BLL_SMS\bin\Debug\EntityFramework.dll
+E:\old_Laptop\NewLIS\ERP\ERP\BLL_SMS\bin\Debug\EntityFramework.SqlServer.dll
+E:\old_Laptop\NewLIS\ERP\ERP\BLL_SMS\bin\Debug\EntityFramework.xml
+E:\old_Laptop\NewLIS\ERP\ERP\BLL_SMS\bin\Debug\EntityFramework.SqlServer.xml
+E:\old_Laptop\NewLIS\ERP\ERP\BLL_SMS\obj\Debug\BLL_SMS.csprojResolveAssemblyReference.cache
+E:\old_Laptop\NewLIS\ERP\ERP\BLL_SMS\obj\Debug\BLL_SMS.dll
+E:\old_Laptop\NewLIS\ERP\ERP\BLL_SMS\obj\Debug\BLL_SMS.pdb

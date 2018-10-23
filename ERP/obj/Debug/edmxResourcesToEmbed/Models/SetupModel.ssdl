@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SetupModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Branch">
+    <Key>
+      <PropertyRef Name="BranchID" />
+    </Key>
+    <Property Name="BranchID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Description" Type="varchar" MaxLength="100" />
+    <Property Name="OrgID" Type="int" Nullable="false" />
+    <Property Name="CountryId" Type="int" Nullable="false" />
+    <Property Name="ProvinceId" Type="int" Nullable="false" />
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="RowID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="20" />
+    <Property Name="Decription" Type="varchar" MaxLength="100" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="20" />
+    <Property Name="Description" Type="varchar" MaxLength="100" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="DeptId" />
+    </Key>
+    <Property Name="DeptId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BranchID" Type="int" />
+    <Property Name="Description" Type="varchar" MaxLength="100" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="bit" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="bit" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Organization">
+    <Key>
+      <PropertyRef Name="OrgID" />
+    </Key>
+    <Property Name="OrgID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="100" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Province">
+    <Key>
+      <PropertyRef Name="ProvinceId" />
+    </Key>
+    <Property Name="ProvinceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="20" />
+    <Property Name="Decription" Type="varchar" MaxLength="100" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="SubDepartments">
+    <Key>
+      <PropertyRef Name="SubDeptId" />
+    </Key>
+    <Property Name="SubDeptId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DeptId" Type="int" />
+    <Property Name="Description" Type="varchar" MaxLength="100" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <Association Name="FK__Branch__CityId__2A4B4B5E">
+    <End Role="City" Type="Self.City" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__CountryI__2B3F6F97">
+    <End Role="Country" Type="Self.Country" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__OrgID__2C3393D0">
+    <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organization">
+        <PropertyRef Name="OrgID" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="OrgID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__OrgID__2D27B809">
+    <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organization">
+        <PropertyRef Name="OrgID" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="OrgID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__Province__2E1BDC42">
+    <End Role="Province" Type="Self.Province" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Province">
+        <PropertyRef Name="ProvinceId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="ProvinceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__Province__2F10007B">
+    <End Role="Province" Type="Self.Province" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Province">
+        <PropertyRef Name="ProvinceId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="ProvinceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__Province__300424B4">
+    <End Role="Province" Type="Self.Province" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Province">
+        <PropertyRef Name="ProvinceId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="ProvinceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Departmen__Branc__30F848ED">
+    <End Role="Branch" Type="Self.Branch" Multiplicity="0..1" />
+    <End Role="Department" Type="Self.Department" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Branch">
+        <PropertyRef Name="BranchID" />
+      </Principal>
+      <Dependent Role="Department">
+        <PropertyRef Name="BranchID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SubDepart__DeptI__35BCFE0A">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="SubDepartments" Type="Self.SubDepartments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="DeptId" />
+      </Principal>
+      <Dependent Role="SubDepartments">
+        <PropertyRef Name="DeptId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SetupModelStoreContainer">
+    <EntitySet Name="Branch" EntityType="Self.Branch" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Organization" EntityType="Self.Organization" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Province" EntityType="Self.Province" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SubDepartments" EntityType="Self.SubDepartments" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Branch__CityId__2A4B4B5E" Association="Self.FK__Branch__CityId__2A4B4B5E">
+      <End Role="City" EntitySet="City" />
+      <End Role="Branch" EntitySet="Branch" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__CountryI__2B3F6F97" Association="Self.FK__Branch__CountryI__2B3F6F97">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="Branch" EntitySet="Branch" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__OrgID__2C3393D0" Association="Self.FK__Branch__OrgID__2C3393D0">
+      <End Role="Organization" EntitySet="Organization" />
+      <End Role="Branch" EntitySet="Branch" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__OrgID__2D27B809" Association="Self.FK__Branch__OrgID__2D27B809">
+      <End Role="Organization" EntitySet="Organization" />
+      <End Role="Branch" EntitySet="Branch" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__Province__2E1BDC42" Association="Self.FK__Branch__Province__2E1BDC42">
+      <End Role="Province" EntitySet="Province" />
+      <End Role="Branch" EntitySet="Branch" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__Province__2F10007B" Association="Self.FK__Branch__Province__2F10007B">
+      <End Role="Province" EntitySet="Province" />
+      <End Role="Branch" EntitySet="Branch" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__Province__300424B4" Association="Self.FK__Branch__Province__300424B4">
+      <End Role="Province" EntitySet="Province" />
+      <End Role="Branch" EntitySet="Branch" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Departmen__Branc__30F848ED" Association="Self.FK__Departmen__Branc__30F848ED">
+      <End Role="Branch" EntitySet="Branch" />
+      <End Role="Department" EntitySet="Department" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SubDepart__DeptI__35BCFE0A" Association="Self.FK__SubDepart__DeptI__35BCFE0A">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="SubDepartments" EntitySet="SubDepartments" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

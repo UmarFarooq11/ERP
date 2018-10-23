@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a188f4e5c4334f168b83ad8a8ed61d81" Name="Diagram1">
+        <EntityTypeShape EntityType="SMSModel.SMS_Group" Width="1.5" PointX="1.125" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.SMS_Menu" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.SMS_User" Width="1.5" PointX="3.125" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SMSModel.SMS_UserRole" Width="1.5" PointX="8.125" PointY="0.625" IsExpanded="true" />
+        <AssociationConnector Association="SMSModel.FK__SMS_User__GroupI__73852659" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__SMS_UserR__Group__6AEFE058" ManuallyRouted="false" />
+        <AssociationConnector Association="SMSModel.FK__SMS_UserR__Group__6FB49575" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SMSModel.SMS_SubUserRole" Width="1.5" PointX="10.375" PointY="1.75" />
+        <AssociationConnector Association="SMSModel.FK__SMS_SubUs__RoleI__0880433F" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

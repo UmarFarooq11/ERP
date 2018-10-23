@@ -1,0 +1,859 @@
+﻿
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        BindTreeMenuForCreate();
+    });
+
+    function BindTreeMenuForCreate() {
+
+        var usertree = "";
+        var tree = "";
+        $.ajax({
+            type: 'post',
+            datatype: 'json',
+            url: 'Home/GetTreeMenu',
+            content: "application/json; charset=utf-8",
+            cache: false,
+            success: function (records, textstatus, jqxhr) {
+                $('#tree').html('')
+                tree = $('#tree').tree({
+                    primaryKey: 'MenuId',
+                    dataSource: records,
+                    dragAndDrop: true,
+                    checkboxes: true,
+                    destroy: true,
+                    iconsLibrary: 'glyphicons',
+                    // uiLibrary: 'bootstrap'
+                });
+
+                tree.on('nodeDrop', function (e, Id, PerentId) {
+                      
+                    currentNode = Id ? tree.getDataById(Id) : {};
+                    console.log("current Node = " + currentNode);
+                    parentNode = PerentId ? tree.getDataById(PerentId) : {};
+                    console.log("parent Node = " + parentNode);
+                    if (currentNode.perentId === null && parentNode.perentId === null) {
+                        alert("Parent node is not droppable..!!");
+                        return false;
+                    }
+                    else { 
+                        $('#lblAction').text('U')
+                        $('#lblID').text(currentNode.MenuId)
+                        $('#lblParentId').text(currentNode.ParentId)
+                        $('#lblChildId').text(parentNode.ParentId)
+                        $('#txtMenu').val(currentNode.MenuName)
+                        $('#txtPageName').val(currentNode.Action)
+                        $('#ddlIcon').val(currentNode.Icon)
+                        $('#chkActive').prop('checked', currentNode.Status)
+                        CRUDMenu(e);
+                    }
+
+                });
+
+                $('#btngetvalue').click(function (e) {
+                    var result = tree.getCheckedNodes();
+                    if (result == "") { alert("please select node..!!") }
+                    else {
+                        alert("selected node id is= " + result.join());
+                    }
+                });
+
+
+
+            },
+            error: function (jqxhr, textstatus, errorthrown) {
+                alert('error - ' + errorthrown);
+            }
+        });
+         
+
+        $('#btnpopoveraddnode').click(function (e) {
+            //e.preventdefault();
+            ResetControl();
+            $('#lblAction').text('I')
+            $('#modal-default').modal({ backdrop: 'static', keyboard: true })
+        });
+        //save data from popup
+        $(document).on("click", "#savenode", function (event) {
+            event.preventdefault();
+            $.validator.unobtrusive.parse($('#formaddnode'));
+            $('#formaddnode').validate();
+            if ($('#formaddnode').valid()) {
+                var formdata = $('#formaddnode').serialize();
+                // alert(formdata);
+                $.ajax({
+                    type: "post",
+                    url: "addnewnode",
+                    datatype: "json",
+                    data: formdata,
+                    success: function (response) {
+                        // $("#modaladdnode").modal("hide");
+                        window.location.reload();
+                    },
+                    error: function (response) {
+                        alert('exception found');
+                        //  $("#modaladdnode").modal("hide");
+                        window.location.reload();
+                    },
+                    complete: function () {
+                        //  $('.ajax-loader').css("visibility", "hidden");
+                    }
+                });
+            }
+
+        });
+        //close popup
+        $(document).on("click", "#closepopup", function (e) {
+            e.preventdefault();
+            $("#modaladdnode").modal("hide");
+        });
+        $('.rbtnnodetype').click(function (e) {
+            if ($(this).val() == "pn") {
+                $('.petenddiv').attr("class", "petenddiv hidden");
+
+                $("#parentname").val("");
+            }
+            else {
+                $('.petenddiv').attr("class", "petenddiv");
+            }
+        });
+
+    }
+
+    // show model popup to add new node in tree
+    function AddEditMenu(Control, Action) { 
+        ResetControl();
+
+        $('#lblAction').text(Action)
+         
+        var _li = $($(Control).closest('li'))
+        var ClassName = $(Control).attr('Class');
+
+        $('#lblID').text(_li.attr('MenuId').trim())
+        $('#lblParentId').text(_li.attr('ParentId').trim())
+        $('#lblChildId').text((_li.attr('ChildId').trim()))// > 0 ? _li.attr('ChildId') : _li.attr('ParentId')))
+
+        if (Action != 'I') {
+            // $('#txtParentName').val(_li.attr('MenuName'))
+            $('#txtMenu').val(_li.attr('MenuName').trim())
+            $('#txtPageName').val(_li.attr('PageName').trim() == "null" ? "" : _li.attr('PageName').trim())
+            $('#ddlIcon').val(_li.attr('Icon').trim() == undefined ? '' : _li.attr('Icon').trim())
+            $('#chkActive').prop('checked', _li.attr('active'))
+            
+        }
+
+        if (Action == "D")
+            CRUDMenu(Control)
+        else
+            $('#modal-default').modal({ backdrop: 'static', keyboard: true })
+
+         
+    }
+
+    function CRUDMenu(Control) {
+         debugger
+     //   if (validation()) {
+            var _ID = $('#lblAction').text() == 'D' ? $($(Control).closest('li')).attr('MenuId') : $('#lblID').text();
+        
+            var mode = $('#lblAction').text().trim()
+            var ObjMenu = [];
+
+            ObjMenu.push({
+                MenuId: _ID,
+                ParentId: $('#lblParentId').text(),
+                ChildId: $('#lblChildId').text(),
+                MenuName: $('#txtMenu').val().trim(),
+                Action: $('#txtPageName').val().trim(),
+                Icon: $('#ddlIcon').val(),
+                Status: $('#chkActive').prop('checked') 
+            })
+            $.ajax({
+                url: "/Home/CRUDMenu",
+                data: JSON.stringify({ ObjMenu: ObjMenu, _Mode: mode }),
+                type: "POST",
+                dataType: 'json',
+                cache: false,
+                async: false,
+                contentType: 'application/json; charset=utf-8',
+                success: function (reponse) {
+                    $(".cl").click()
+
+                    setTimeout(function () { OpenPartialView('Sms_Menu') }, 500)
+
+                },
+                error: function (reponse) {
+                }
+
+            });
+            $(".cl").click()
+
+        }
+    //}
+    function ResetControl() {
+        $('lable').text('')
+        $('[type=Text]').val('')
+        $('[type=checkbox]').prop('checked', false)
+        $('.select2').val('0')
+        $('#lblID').text('0')
+    }
+
+</script>
+
+
+<div class="col-md-12" style="margin:100px auto;">
+    <div class="modal fade" id="modal-default">
+      
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close cl" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Menu Setup</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+
+                        <div class="form-group hide">
+
+                            <label class="control-label col-md-3">Parent Menu :</label>
+                            <div class="col-md-9">
+                                <input id="txtParentName" type="text" value="" class="form-control" disabled />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label id="lblID" class="hide"> </label>
+                            <label id="lblAction" class="hide"> </label>
+                            <label id="lblParentId" class="hide"> </label>
+                            <label id="lblChildId" class="hide"> </label>
+                            <label class="control-label col-md-3">Menu Name :</label>
+                            <div class="col-md-9">
+                                <input id="txtMenu" type="text" value="" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Page Name:</label>
+                            <div class="col-md-9">
+                                <input id="txtPageName" type="text" value="" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Icon :</label>
+                            <div class="col-md-9">
+                                <select id="ddlIcon" class="form-control select2" style="width: 100%;">
+                                    <option value="0">select</option>
+                                    <option value="plus">fa fa-plus</option>
+                                    <option value="edit">fa fa-edit</option>
+                                    <option value="trash">fa fa-trash</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2"> Active :</label>
+                            <div class="col-md-10">
+                                <input id="chkActive" type="checkbox">
+                            </div>
+                        </div>
+
+
+
+                        <div id="whoblock" class="hide">
+                            <div class="form-group">
+                                <hr />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3"> Created By :</label>
+                                <div class="col-md-3">
+                                    <label id="lblCreatedBy"> </label>
+                                </div>
+
+                                <label class="control-label col-md-3"> Created Date :</label>
+                                <div class="col-md-3">
+                                    <label id="lblCreatedDate"> </label>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3"> Updated By :</label>
+                                <div class="col-md-3">
+                                    <label id="lblUpdatedBy"> </label>
+                                </div>
+
+                                <label class="control-label col-md-3"> Updated Date :</label>
+                                <div class="col-md-3">
+                                    <label id="lblUpdatedDate"> </label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left cl" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="CRUDMenu(this)">Save</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </div>
+    <div class="col-md-11">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Tree Menu Create</div>
+
+            <div class="panel-body">
+                <div id="tree"></div>
+
+                <div class="clearfix">
+                </div>
+
+                <br />
+                <div>
+                    <button id="btngetvalue" data-toggle="modal" class='btn btn-warning'> Get Node Ids <span class="glyphicon glyphicon-upload"></span>  </button>
+                    <button id="btnpopoveraddnode" data-toggle="modal" class='btn btn-warning'> add node <span class="glyphicon glyphicon-plus"></span>  </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+ 
+
+
+@*<section class="content">
+
+        <div class="row">
+            <button style="position:fixed;bottom:40px; right:50px; z-index:1;" class="btn bg-blue" onclick="OpenPop(this)">
+
+                <i class="glyphicon glyphicon-plus"></i>
+            </button>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-11">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Menu Setup</h3>
+                    </div>
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+                        <div class="col-xs-6">
+                            <ul class='sidebar-menu tree' data-widget='tree' id="TreeMenu1"></ul>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+
+
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+
+        <div class="modal fade" id="modal-default">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close cl" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Menu Setup</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                <label id="lblID" class="hide"> </label>
+                                <label id="lblChildId" class="hide"> </label>
+                                <label class="control-label col-md-3">Parent Menu :</label>
+                                <div class="col-md-9">
+                                    <input id="txtParentName" type="text" value="" class="form-control" disabled />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Menu Name :</label>
+                                <div class="col-md-9">
+                                    <input id="txtMenu" type="text" value="" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Page Name:</label>
+                                <div class="col-md-9">
+                                    <input id="txtPageName" type="text" value="" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Icon :</label>
+                                <div class="col-md-9">
+                                    <select id="ddlIcon" class="form-control select2" style="width: 100%;">
+                                        <option value="0">select</option>
+                                        <option value="plus">fa fa-plus</option>
+                                        <option value="edit">fa fa-edit</option>
+                                        <option value="trash">fa fa-trash</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2"> Active :</label>
+                                <div class="col-md-10">
+                                    <input id="chkActive" type="checkbox">
+                                </div>
+                            </div>
+
+
+
+                            <div id="whoblock" class="hide">
+                                <div class="form-group">
+                                    <hr />
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3"> Created By :</label>
+                                    <div class="col-md-3">
+                                        <label id="lblCreatedBy"> </label>
+                                    </div>
+
+                                    <label class="control-label col-md-3"> Created Date :</label>
+                                    <div class="col-md-3">
+                                        <label id="lblCreatedDate"> </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3"> Updated By :</label>
+                                    <div class="col-md-3">
+                                        <label id="lblUpdatedBy"> </label>
+                                    </div>
+
+                                    <label class="control-label col-md-3"> Updated Date :</label>
+                                    <div class="col-md-3">
+                                        <label id="lblUpdatedDate"> </label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left cl" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="CRUDMenu(this,'I')">Save</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+        </div>
+    </section>*@
+
+
+
+
+
+
+
+
+
+
+
+@*<script>
+
+        // Loading
+        $(function () {
+            BindUpdateMenu();
+        })
+
+        function BindUpdateMenu() {
+            $.ajax({
+                url: 'GetTreeMenu',
+                method: 'POST',
+                data: "",
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    $('#TreeMenu1').html("");
+                    buildMenu1($('#TreeMenu1'), data);
+                },
+                error: function (data) {
+                }
+            });
+        }
+        function buildMenu1(parent, items) {
+            $.each(items, function () {
+                if (this.MenuList && this.MenuList.length > 0)
+                    var abc = "<li class='treeview' RowId=" + this.ID + "  ParentId=" + this.Parent_Form_Id + " ChildId=" + this.Child_Form_Id + "  MenuName=" + this.Menu_Name + " PageName=" + this.Form_Url + " Icon=" + this.ICON + " Active=" + this.Active + ">" + "<a href='javascript:void(0);'> <span>" + this.Menu_Name + "</span><span class='pull-right-container' style='background-color:yellow;' > <i class='fa fa-plus' onclick=\"javascript:AddEditMenu(this,'U')\" style='background-color:yellow;' ></i> " + ' | ' + " <i class='fa fa-edit' onclick=\"javascript:AddEditMenu(this,'N')\"></i> " + ' | ' + " <i class='fa fa-trash' onclick=\"javascript:CRUDMenu(this,'D')\"></i> </span></a></li>";
+                else
+                    var abc = "<li class='treeview' RowId=" + this.ID + "  ParentId=" + this.Parent_Form_Id + " ChildId=" + this.Child_Form_Id + "  MenuName=" + this.Menu_Name + " PageName=" + this.Form_Url + " Icon=" + this.ICON + " Active=" + this.Active + ">" +
+                               " <a href='javascript:void(0);' > <span>" + this.Menu_Name + "</span> <span class='pull-right-container' style='background-color:yellow;'> <i class='fa fa-plus' onclick=\"javascript:AddEditMenu(this,'N')\"></i> " + ' | ' + " <i class='fa fa-edit' onclick=\"javascript:AddEditMenu(this,'U')\"></i>  " + ' | ' + "<i class='fa fa-trash' onclick=\"javascript:CRUDMenu(this,'D')\"></i> </span></a></li>";
+
+                var li = $(abc);
+
+                if (!this.Active)
+                    li.addClass('');
+
+                li.appendTo(parent);
+
+                if (this.MenuList && this.MenuList.length > 0) {
+                    var ul = $("<ul class='treeview-menu'></ul>");
+                    ul.appendTo(li);
+                    buildMenu1(ul, this.MenuList);
+                }
+            });
+
+            //$('#TreeMenu1>.treeview').click(function () { $($(this).closest('li').find('ul')).toggle() })
+        }
+
+
+        function CRUDMenu(Control, Mode) {
+            var _CreatedBy = 1;
+            var _CreatedDate = '';
+            var _UpdatedBy = 0;
+            var _UpdatedDate = '';
+            var _ID = Mode == 'D' ? $($(Control).closest('li')).attr('RowId') : $('#lblID').text();
+            if (Control != '') {
+                _CreatedBy = 0//parseInt(data['CreatedBy']) == '' ? 1 : parseInt(data['CreatedBy']);
+                _CreatedDate = '1/1/2018';// data['CreatedDate'] == '' ? '' : parseInt(data['CreatedDate']);
+                _UpdatedBy = 0;//parseInt(data['UpdatedBy']) == '' ? 1 : parseInt(data['UpdatedBy']);
+                _UpdatedDate = '1/1/2018';//data['UpdatedDate'] == '' ? '' : parseInt(data['UpdatedDate']);
+            }
+
+            var mode = Mode
+            var ObjMenu = [];
+
+            ObjMenu.push({
+                ID: _ID,
+                Parent_Form_Id: 0,
+                Child_Form_Id: $('#lblChildId').text(),
+                Menu_Name: $('#txtMenu').val().trim(),
+                Form_Url: $('#txtPageName').val().trim(),
+                ICON: $('#ddlIcon').val(),
+                Active: $('#chkActive').prop('checked'),
+                CreatedBy: _CreatedBy,
+                CreatedDate: _CreatedDate,
+                UpdatedBy: _UpdatedBy,
+                UpdatedDate: _UpdatedDate
+            })
+            $.ajax({
+                url: "/Home/CRUDMenu",
+                data: JSON.stringify({ ObjMenu: ObjMenu, _Mode: mode }),
+                type: "POST",
+                dataType: 'json',
+                cache: false,
+                async: false,
+                contentType: 'application/json; charset=utf-8',
+                success: function (reponse) {
+                    BindUpdateMenu();
+                },
+                error: function (reponse) {
+                }
+
+            });
+            $(".cl").click()
+        }
+
+
+
+        function ResetControl() {
+            $('lable').text('')
+            $('[type=Text]').val('')
+            $('[type=checkbox]').prop('checked', false)
+            $('.select2').val('0')
+            $('#lblID').text('0')
+        }
+
+    </script>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*Test
+
+
+
+
+
+
+
+
+
+
+    @*<style>
+            html {
+                margin: 0;
+                padding: 0;
+                font-size: 62.5%;
+            }
+
+            /*body {
+                    max-width: 800px;
+                    min-width: 300px;
+                    margin: 0 auto;
+                    padding: 20px 10px;
+                    font-size: 14px;
+                    font-size: 1.4em;
+                }*/
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .demo {
+                overflow: auto;
+                border: 1px solid silver;
+                min-height: 100px;
+            }
+        </style>
+
+        <link href="~/Media/~/Ignite/JsTree/~/Media/themes/default/style.min.css" rel="stylesheet" />
+        <body>
+            <h1>HTML demo</h1>
+            <div id="html" class="demo">
+                <ul>
+                    <li data-jstree='{ "opened" : true }'>
+                        Root node
+                        <ul>
+                            <li data-jstree='{ "selected" : true }'>Child node 1</li>
+                            <li>Child node 2</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h1>Inline data demo</h1>
+            <div id="data" class="demo"></div>
+
+            <h1>Data format demo</h1>
+            <div id="frmt" class="demo"></div>
+
+            <h1>AJAX demo</h1>
+            <div id="ajax" class="demo"></div>
+
+            <h1>Lazy loading demo</h1>
+            <div id="lazy" class="demo"></div>
+
+            <h1>Callback function data demo</h1>
+            <div id="clbk" class="demo"></div>
+
+            <h1>Interaction and events demo</h1>
+            <button id="evts_button">select node with id 1</button> <em>either click the button or a node in the tree</em>
+            <div id="evts" class="demo"></div>
+
+            <script src="~/Media///ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+            <script src="~/Media/~/Ignite/JsTree/~/Media/jstree.min.js"></script>
+            <script>
+                // html demo
+                $('#html').jstree();
+
+                // inline data demo
+                $('#data').jstree(
+
+                    {
+                        "~/Media": ["checkbox"],
+                        'core': {
+                            'data': [
+                                {
+                                    "text": "Root node", "children": [
+                                          { "text": "Child node 1" },
+                                          { "text": "Child node 2" }
+                                    ]
+                                }
+                            ]
+                        }
+                    });
+
+                // data format demo
+                $('#frmt').jstree({
+                    "~/Media": ["checkbox"],
+                    'core': {
+                        'data': [
+                            {
+                                "text": "Root node",
+                                "state": { "opened": true },
+                                "children": [
+                                    {
+                                        "text": "Child node 1",
+                                        "state": { "selected": true },
+                                        "icon": "jstree-file"
+                                    },
+                                    { "text": "Child node 2", "state": { "disabled": true } }
+                                ]
+                            }
+                        ]
+                    }
+                });
+
+                // ajax demo
+                $('#ajax').jstree({
+                    "~/Media": ["checkbox"],
+                    'core': {
+                        'data': [
+                            {
+                                "text": "Root node",
+                                "state": { "opened": true },
+                                "children": [
+                                    {
+                                        "text": "Child node 1",
+                                        "state": { "selected": true },
+                                        "icon": "jstree-file"
+                                    },
+                                    { "text": "Child node 2", "state": { "disabled": true } }
+                                ]
+                                ,
+                                "dataType": "json"
+                            }
+                        ]
+                    }
+
+                });
+
+                // lazy demo
+                $('#lazy').jstree({
+                    "conditionalselect": function (node, event) {
+
+                        return false;
+                    },
+                    "~/Media": [
+             "checkbox",
+             "contextmenu",
+             "dnd",
+             "massload",
+             "search",
+             "sort",
+             "state",
+             "types",
+             "unique",
+             "wholerow",
+             "changed",
+             "conditionalselect"
+                    ],
+                    'core': {
+                        'data': {
+                            "url": "//www.jstree.com/fiddle/?lazy",
+                            "data": function (node) {
+                                return { "id": node.id };
+                            }
+                        }
+                    }
+                });
+
+                // data from callback
+                $('#clbk').jstree({
+                    'core': {
+                        'data': function (node, cb) {
+                            if (node.id === "#") {
+                                cb([{ "text": "Root", "id": "1", "children": true }]);
+                            }
+                            else {
+                                cb(["Child"]);
+                            }
+                        }
+                    }
+                });
+
+                // interaction and events
+                $('#evts_button').on("click", function () {
+                    var instance = $('#evts').jstree(true);
+                    instance.deselect_all();
+                    instance.select_node('1');
+                });
+                $('#evts')
+                    .on("changed.jstree", function (e, data) {
+                        if (data.selected.length) {
+                            alert('The selected node is: ' + data.instance.get_node(data.selected[0]).text);
+                        }
+                    })
+                    .jstree({
+                        'core': {
+                            'multiple': false,
+                            'data': [
+                                {
+                                    "text": "Root node", "children": [
+                                          { "text": "Child node 1", "id": 1 },
+                                          { "text": "Child node 2" }
+                                    ]
+                                }
+                            ]
+                        }
+                    });
+            </script>
+        </body>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

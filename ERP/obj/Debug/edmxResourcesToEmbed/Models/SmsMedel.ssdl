@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="SMS_Group">
+    <Key>
+      <PropertyRef Name="GroupId" />
+    </Key>
+    <Property Name="GroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroupName" Type="varchar" MaxLength="50" />
+    <Property Name="Type" Type="int" />
+    <Property Name="Description" Type="varchar" MaxLength="100" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SMS_Menu">
+    <Key>
+      <PropertyRef Name="MenuId" />
+    </Key>
+    <Property Name="MenuId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParentId" Type="int" Nullable="false" />
+    <Property Name="ChildId" Type="int" />
+    <Property Name="MenuName" Type="varchar" MaxLength="50" />
+    <Property Name="Action" Type="varchar" MaxLength="20" />
+    <Property Name="Icon" Type="varchar" MaxLength="50" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="SMS_SubUserRole">
+    <Key>
+      <PropertyRef Name="SubRoleId" />
+    </Key>
+    <Property Name="SubRoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoleId" Type="int" />
+    <Property Name="Components" Type="varchar" MaxLength="100" />
+    <Property Name="Operators" Type="varchar" MaxLength="50" />
+    <Property Name="Action" Type="varchar" MaxLength="50" />
+    <Property Name="Clause" Type="varchar" MaxLength="50" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="100" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="SMS_User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="RowId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="100" />
+    <Property Name="Email" Type="varchar" MaxLength="100" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="DeptCode" Type="int" />
+    <Property Name="EmpCode" Type="int" />
+    <Property Name="LoginLimit" Type="int" />
+    <Property Name="GroupId" Type="int" />
+    <Property Name="UserChangePassword" Type="bit" />
+    <Property Name="FirstLoginId" Type="int" />
+    <Property Name="LoginTImeFrom" Type="datetime" />
+    <Property Name="LoginTimeTo" Type="datetime" />
+    <Property Name="LogedNo" Type="int" />
+    <Property Name="Picture" Type="varchar" MaxLength="50" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="SMS_UserRole">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GroupId" Type="int" Nullable="false" />
+    <Property Name="MenuId" Type="int" Nullable="false" />
+    <Property Name="InsertAllow" Type="bit" Nullable="false" />
+    <Property Name="EditAllow" Type="bit" Nullable="false" />
+    <Property Name="ViewAllow" Type="bit" Nullable="false" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="MakerWorkStationId" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <Association Name="FK__SMS_SubUs__RoleI__31EC6D26">
+    <End Role="SMS_UserRole" Type="Self.SMS_UserRole" Multiplicity="0..1" />
+    <End Role="SMS_SubUserRole" Type="Self.SMS_SubUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SMS_UserRole">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="SMS_SubUserRole">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SMS_User__GroupI__32E0915F">
+    <End Role="SMS_Group" Type="Self.SMS_Group" Multiplicity="0..1" />
+    <End Role="SMS_User" Type="Self.SMS_User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SMS_Group">
+        <PropertyRef Name="GroupId" />
+      </Principal>
+      <Dependent Role="SMS_User">
+        <PropertyRef Name="GroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SMS_UserR__Group__33D4B598">
+    <End Role="SMS_Group" Type="Self.SMS_Group" Multiplicity="1" />
+    <End Role="SMS_UserRole" Type="Self.SMS_UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SMS_Group">
+        <PropertyRef Name="GroupId" />
+      </Principal>
+      <Dependent Role="SMS_UserRole">
+        <PropertyRef Name="GroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SMS_UserR__Group__34C8D9D1">
+    <End Role="SMS_Group" Type="Self.SMS_Group" Multiplicity="1" />
+    <End Role="SMS_UserRole" Type="Self.SMS_UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SMS_Group">
+        <PropertyRef Name="GroupId" />
+      </Principal>
+      <Dependent Role="SMS_UserRole">
+        <PropertyRef Name="GroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SMSModelStoreContainer">
+    <EntitySet Name="SMS_Group" EntityType="Self.SMS_Group" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SMS_Menu" EntityType="Self.SMS_Menu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SMS_SubUserRole" EntityType="Self.SMS_SubUserRole" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SMS_User" EntityType="Self.SMS_User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SMS_UserRole" EntityType="Self.SMS_UserRole" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__SMS_SubUs__RoleI__31EC6D26" Association="Self.FK__SMS_SubUs__RoleI__31EC6D26">
+      <End Role="SMS_UserRole" EntitySet="SMS_UserRole" />
+      <End Role="SMS_SubUserRole" EntitySet="SMS_SubUserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SMS_User__GroupI__32E0915F" Association="Self.FK__SMS_User__GroupI__32E0915F">
+      <End Role="SMS_Group" EntitySet="SMS_Group" />
+      <End Role="SMS_User" EntitySet="SMS_User" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SMS_UserR__Group__33D4B598" Association="Self.FK__SMS_UserR__Group__33D4B598">
+      <End Role="SMS_Group" EntitySet="SMS_Group" />
+      <End Role="SMS_UserRole" EntitySet="SMS_UserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SMS_UserR__Group__34C8D9D1" Association="Self.FK__SMS_UserR__Group__34C8D9D1">
+      <End Role="SMS_Group" EntitySet="SMS_Group" />
+      <End Role="SMS_UserRole" EntitySet="SMS_UserRole" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

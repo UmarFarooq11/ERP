@@ -1,0 +1,240 @@
+﻿
+<script>
+
+    // Loading
+    $(function () {
+        BindCountryList()
+    })
+
+    function BindCountryList() {
+        var FlagInsert = false;
+        $('#GrdCountry').DataTable({
+            "ajax": {
+                deferRender: true,
+                "url": "/Home/CRUDCountry",
+                "dataSrc": "Country", 
+            }, 
+            "bDestroy": true,
+            "columns": [
+            { "data": "Name", "title": "Name" },
+            { "data": "Description", "title": "Remarks" },
+            { "data": "Status", "title": "Active" },            
+            { "data": "CountryId", "visible": false },
+            { "data": "MakerWorkStationId", "visible": false },
+            { "data": "CreatedBy", "visible": false },
+            { "data": "CreatedDate", "visible": false },
+            { "data": "UpdatedBy", "visible": false },
+            { "data": "UpdatedDate", "visible": false },
+              {
+                  "targets": -1,
+                  "title": "Action",
+                  "width": "12%",
+                  "render": function (data, type, full, meta) { 
+                      var _Roles = meta.settings.json._UserRoles[0];
+                      // var InsertAllow = _Roles.InsertAllow;
+                      var ViewAllow = _Roles.ViewAllow;
+                      var EditAllow = _Roles.EditAllow;
+                      
+                      var MainDiv = "<div style='text-align: center'>"
+                      //MainDiv += EditAllow == true ? "<button class='btn btn-danger btn-xs' onclick='DeleteItem(this)'><i class='glyphicon glyphicon-trash'></i></button>" : ""
+                      MainDiv += EditAllow == true ? "<button class='btn btn-primary btn-xs'  onclick='OpenPop(this)'><i class='glyphicon glyphicon-edit'></i></button>&nbsp;" : ""
+                      MainDiv += ViewAllow == true ? "<button class='btn btn-success btn-xs' onclick='OpenPop(this)'><i class='glyphicon glyphicon-eye-open'></i></button>&nbsp;" : ""
+                      
+
+                      if (!ViewAllow && !EditAllow) {
+                         
+                      }
+                      return MainDiv + "</div>";
+
+                    
+                  } 
+              },
+            ]
+        });
+    }
+    function CRUDCountry(Control,Mode) {
+         
+        if (validation()) {
+            var mode=Mode;
+            var objCountry = [];
+
+            objCountry.push({
+                CountryId:  $('#lblID').text()  ,
+                Name: $('#txtName').val().trim(),
+                Description: $('#txtDescription').val().trim(),
+                Status: $('#chkActive').prop('checked'),
+                MakerWorkStationId: '',
+                CreatedBy: 1,
+                CreatedDate: '',
+                UpdatedBy: 1,
+                UpdatedDate: ''
+            })
+            $.ajax({
+                url: "/Home/CRUDCountry",
+                data: JSON.stringify({ objCountry: objCountry ,_Mode:mode}),
+                type: "POST",
+                dataType: 'json',
+                cache: false,
+                async: false,
+                contentType: 'application/json; charset=utf-8',
+                success: function (reponse) {
+                    BindCountryList()
+                },
+                error: function (reponse) {
+
+                }
+
+            });
+            $(".cl").click()
+        }
+    }
+    function DeleteItem(control) {
+        if (confirm("Are you sure want to delete?")) {
+            CRUDCountry(control,'D');
+        }
+        return false;
+    }
+
+    function OpenPop(Control) {
+        ResetControl()
+
+        var data=$('#GrdCountry').DataTable().row($(Control).closest('tr')).data();
+
+        var Action = $($(Control).closest('button').find('i')).attr('class');
+        $('#modal-default').modal({ backdrop: 'static', keyboard: true })
+
+        if (Action == "glyphicon glyphicon-edit" || Action == "glyphicon glyphicon-eye-open") {
+            $('#whoblock').addClass('hide')
+            $('#lblID').text(data['CountryId'])
+            $('#txtName').val(data['Name'])
+            $('#txtDescription').val(data['Description'])
+              $('#chkActive').prop('checked', data['Status'])
+
+        }
+        else if (Action == "glyphicon glyphicon-trash") {
+            $('#whoblock').addClass('hide')
+        }
+        else if (Action == "glyphicon glyphicon-plus") {
+            $('#whoblock').addClass('hide')
+        }
+        if (Action == "glyphicon glyphicon-eye-open") {
+            $('#whoblock').removeClass('hide')
+        }
+    }
+    
+</script>
+
+
+<section class="content">
+
+    <div class="row">
+        <button style="position:fixed;bottom:40px; right:50px; z-index:1;" class="btn bg-blue @HttpContext.Current.Session["InsertAllow"].ToString()"  onclick="OpenPop(this)">
+            <i class=" glyphicon glyphicon-plus"></i>
+        </button>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-11">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Country List</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="GrdCountry" class="table table-bordered table-striped control"  ControlName="Gridview"></table>
+                </div>
+                <!-- /.box-body -->
+
+
+
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Country Setup</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+
+                        <div class="form-group">
+                            <label id="lblID" class="Rowid hide"> </label>
+                            <label class="control-label col-md-3 control" ControlName="Label Name"> Name :</label>
+                            <div class="col-md-9">
+                                <input id="txtName" type="text" value="" class="form-control control" ControlName="Textbox Name" onchange="validation()" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 control" ControlName="Label Description"> Description :</label>
+                            <div class="col-md-9">
+                                <input id="txtDescription" type="text" value="" class="form-control control" ControlName="Textbox Description" onchange="validation()"  />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 control" ControlName="Label Status"> Status :</label>
+                            <div class="col-md-9">
+                                <input id="chkActive" class="control" type="checkbox" ControlName="Checkbox Status">
+                            </div>
+                        </div>
+
+
+
+                        <div id="whoblock" class="hide">
+                            <div class="form-group">
+                                <hr />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 control" ControlName="Label Created By"> Created By :</label>
+                                <div class="col-md-3">
+                                    <label id="lblCreatedBy" class="control" ControlName="Text Created By"> </label>
+                                </div>
+
+                                <label class="control-label col-md-3 control" ControlName="Label Created Date"> Created Date :</label>
+                                <div class="col-md-3">
+                                    <label id="lblCreatedDate" class="control" ControlName="Text Created Date"> </label>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 control" ControlName="Label Updated By"> Updated By :</label>
+                                <div class="col-md-3">
+                                    <label id="lblUpdatedBy" class="control" ControlName="Text Updated By"> </label>
+                                </div>
+
+                                <label class="control-label col-md-3 control" ControlName="Label Updated Date"> Updated Date :</label>
+                                <div class="col-md-3">
+                                    <label id="lblUpdatedDate" class="control" ControlName="Text Updated Date"> </label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left cl control" data-dismiss="modal" ControlName="Button Close" >Close</button>
+                        <button type="button" class="btn btn-primary control @HttpContext.Current.Session["InsertAllow"].ToString()"  onclick="CRUDCountry('','I')" ControlName="Button Save">Save</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+</section>
+<!-- /.content -->

@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SMSModelStoreContainer" CdmEntityContainer="SMSEntities">
+    <EntitySetMapping Name="SMS_Group">
+      <EntityTypeMapping TypeName="SMSModel.SMS_Group">
+        <MappingFragment StoreEntitySet="SMS_Group">
+          <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+          <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="MakerWorkStationId" ColumnName="MakerWorkStationId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SMS_Menu">
+      <EntityTypeMapping TypeName="SMSModel.SMS_Menu">
+        <MappingFragment StoreEntitySet="SMS_Menu">
+          <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="ChildId" ColumnName="ChildId" />
+          <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="Icon" ColumnName="Icon" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="MakerWorkStationId" ColumnName="MakerWorkStationId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SMS_User">
+      <EntityTypeMapping TypeName="SMSModel.SMS_User">
+        <MappingFragment StoreEntitySet="SMS_User">
+          <ScalarProperty Name="RowId" ColumnName="RowId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="EmpCode" ColumnName="EmpCode" />
+          <ScalarProperty Name="LoginLimit" ColumnName="LoginLimit" />
+          <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+          <ScalarProperty Name="UserChangePassword" ColumnName="UserChangePassword" />
+          <ScalarProperty Name="FirstLoginId" ColumnName="FirstLoginId" />
+          <ScalarProperty Name="LoginTImeFrom" ColumnName="LoginTImeFrom" />
+          <ScalarProperty Name="LoginTimeTo" ColumnName="LoginTimeTo" />
+          <ScalarProperty Name="LogedNo" ColumnName="LogedNo" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+          <ScalarProperty Name="MakerWorkStationId" ColumnName="MakerWorkStationId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SMS_UserRole">
+      <EntityTypeMapping TypeName="SMSModel.SMS_UserRole">
+        <MappingFragment StoreEntitySet="SMS_UserRole">
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+          <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+          <ScalarProperty Name="InsertAllow" ColumnName="InsertAllow" />
+          <ScalarProperty Name="EditAllow" ColumnName="EditAllow" />
+          <ScalarProperty Name="ViewAllow" ColumnName="ViewAllow" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="MakerWorkStationId" ColumnName="MakerWorkStationId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SMS_SubUserRole">
+      <EntityTypeMapping TypeName="SMSModel.SMS_SubUserRole">
+        <MappingFragment StoreEntitySet="SMS_SubUserRole">
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="MakerWorkStationId" ColumnName="MakerWorkStationId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Clause" ColumnName="Clause" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="Operators" ColumnName="Operators" />
+          <ScalarProperty Name="Components" ColumnName="Components" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="SubRoleId" ColumnName="SubRoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

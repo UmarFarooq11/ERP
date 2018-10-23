@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c17dc77e11be4290987396309926acb5" Name="Diagram1">
+        <EntityTypeShape EntityType="SetupModel.Branch" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SetupModel.City" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SetupModel.Country" Width="1.5" PointX="0.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SetupModel.Department" Width="1.5" PointX="5.25" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="SetupModel.Organization" Width="1.5" PointX="0.75" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SetupModel.Province" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="SetupModel.SubDepartment" Width="1.5" PointX="7.5" PointY="2.125" IsExpanded="true" />
+        <AssociationConnector Association="SetupModel.FK__Branch__CityId__31B762FC" ManuallyRouted="false" />
+        <AssociationConnector Association="SetupModel.FK__Branch__CountryI__43D61337" ManuallyRouted="false" />
+        <AssociationConnector Association="SetupModel.FK__Branch__OrgID__395884C4" ManuallyRouted="false" />
+        <AssociationConnector Association="SetupModel.FK__Branch__OrgID__44CA3770" ManuallyRouted="false" />
+        <AssociationConnector Association="SetupModel.FK__Branch__Province__3493CFA7" ManuallyRouted="false" />
+        <AssociationConnector Association="SetupModel.FK__Branch__Province__3A4CA8FD" ManuallyRouted="false" />
+        <AssociationConnector Association="SetupModel.FK__Branch__Province__45BE5BA9" ManuallyRouted="false" />
+        <AssociationConnector Association="SetupModel.FK__Departmen__Branc__503BEA1C" ManuallyRouted="false" />
+        <AssociationConnector Association="SetupModel.FK__SubDepart__DeptI__531856C7" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SetupModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Branch">
+    <Key>
+      <PropertyRef Name="BranchID" />
+    </Key>
+    <Property Name="BranchID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="OrgID" Type="Int32" Nullable="false" />
+    <Property Name="CountryId" Type="Int32" Nullable="false" />
+    <Property Name="ProvinceId" Type="Int32" Nullable="false" />
+    <Property Name="CityId" Type="Int32" Nullable="false" />
+    <Property Name="MakerWorkStationId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Boolean" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="City" Relationship="Self.FK__Branch__CityId__2A4B4B5E" FromRole="Branch" ToRole="City" />
+    <NavigationProperty Name="Country" Relationship="Self.FK__Branch__CountryI__2B3F6F97" FromRole="Branch" ToRole="Country" />
+    <NavigationProperty Name="Organization" Relationship="Self.FK__Branch__OrgID__2C3393D0" FromRole="Branch" ToRole="Organization" />
+    <NavigationProperty Name="Organization1" Relationship="Self.FK__Branch__OrgID__2D27B809" FromRole="Branch" ToRole="Organization" />
+    <NavigationProperty Name="Province" Relationship="Self.FK__Branch__Province__2E1BDC42" FromRole="Branch" ToRole="Province" />
+    <NavigationProperty Name="Province1" Relationship="Self.FK__Branch__Province__2F10007B" FromRole="Branch" ToRole="Province" />
+    <NavigationProperty Name="Province2" Relationship="Self.FK__Branch__Province__300424B4" FromRole="Branch" ToRole="Province" />
+    <NavigationProperty Name="Departments" Relationship="Self.FK__Departmen__Branc__30F848ED" FromRole="Branch" ToRole="Department" />
+  </EntityType>
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="RowID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CityId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Decription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Boolean" />
+    <Property Name="MakerWorkStationId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Branches" Relationship="Self.FK__Branch__CityId__2A4B4B5E" FromRole="City" ToRole="Branch" />
+  </EntityType>
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Boolean" />
+    <Property Name="MakerWorkStationId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Branches" Relationship="Self.FK__Branch__CountryI__2B3F6F97" FromRole="Country" ToRole="Branch" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="DeptId" />
+    </Key>
+    <Property Name="DeptId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BranchID" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Boolean" />
+    <Property Name="MakerWorkStationId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="Boolean" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedBy" Type="Boolean" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Branch" Relationship="Self.FK__Departmen__Branc__30F848ED" FromRole="Department" ToRole="Branch" />
+  </EntityType>
+  <EntityType Name="Organization">
+    <Key>
+      <PropertyRef Name="OrgID" />
+    </Key>
+    <Property Name="OrgID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Boolean" />
+    <Property Name="MakerWorkStationId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Branches" Relationship="Self.FK__Branch__OrgID__2C3393D0" FromRole="Organization" ToRole="Branch" />
+    <NavigationProperty Name="Branches1" Relationship="Self.FK__Branch__OrgID__2D27B809" FromRole="Organization" ToRole="Branch" />
+  </EntityType>
+  <EntityType Name="Province">
+    <Key>
+      <PropertyRef Name="ProvinceId" />
+    </Key>
+    <Property Name="ProvinceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Decription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Boolean" />
+    <Property Name="MakerWorkStationId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Branches" Relationship="Self.FK__Branch__Province__2E1BDC42" FromRole="Province" ToRole="Branch" />
+    <NavigationProperty Name="Branches1" Relationship="Self.FK__Branch__Province__2F10007B" FromRole="Province" ToRole="Branch" />
+    <NavigationProperty Name="Branches2" Relationship="Self.FK__Branch__Province__300424B4" FromRole="Province" ToRole="Branch" />
+  </EntityType>
+  <Association Name="FK__Branch__CityId__2A4B4B5E">
+    <End Role="City" Type="Self.City" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__CountryI__2B3F6F97">
+    <End Role="Country" Type="Self.Country" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__OrgID__2C3393D0">
+    <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organization">
+        <PropertyRef Name="OrgID" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="OrgID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__OrgID__2D27B809">
+    <End Role="Organization" Type="Self.Organization" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organization">
+        <PropertyRef Name="OrgID" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="OrgID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__Province__2E1BDC42">
+    <End Role="Province" Type="Self.Province" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Province">
+        <PropertyRef Name="ProvinceId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="ProvinceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__Province__2F10007B">
+    <End Role="Province" Type="Self.Province" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Province">
+        <PropertyRef Name="ProvinceId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="ProvinceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Branch__Province__300424B4">
+    <End Role="Province" Type="Self.Province" Multiplicity="1" />
+    <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Province">
+        <PropertyRef Name="ProvinceId" />
+      </Principal>
+      <Dependent Role="Branch">
+        <PropertyRef Name="ProvinceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Departmen__Branc__30F848ED">
+    <End Role="Branch" Type="Self.Branch" Multiplicity="0..1" />
+    <End Role="Department" Type="Self.Department" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Branch">
+        <PropertyRef Name="BranchID" />
+      </Principal>
+      <Dependent Role="Department">
+        <PropertyRef Name="BranchID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SetupEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Branches" EntityType="Self.Branch" />
+    <EntitySet Name="Cities" EntityType="Self.City" />
+    <EntitySet Name="Countries" EntityType="Self.Country" />
+    <EntitySet Name="Departments" EntityType="Self.Department" />
+    <EntitySet Name="Organizations" EntityType="Self.Organization" />
+    <EntitySet Name="Provinces" EntityType="Self.Province" />
+    <AssociationSet Name="FK__Branch__CityId__2A4B4B5E" Association="Self.FK__Branch__CityId__2A4B4B5E">
+      <End Role="City" EntitySet="Cities" />
+      <End Role="Branch" EntitySet="Branches" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__CountryI__2B3F6F97" Association="Self.FK__Branch__CountryI__2B3F6F97">
+      <End Role="Country" EntitySet="Countries" />
+      <End Role="Branch" EntitySet="Branches" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__OrgID__2C3393D0" Association="Self.FK__Branch__OrgID__2C3393D0">
+      <End Role="Organization" EntitySet="Organizations" />
+      <End Role="Branch" EntitySet="Branches" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__OrgID__2D27B809" Association="Self.FK__Branch__OrgID__2D27B809">
+      <End Role="Organization" EntitySet="Organizations" />
+      <End Role="Branch" EntitySet="Branches" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__Province__2E1BDC42" Association="Self.FK__Branch__Province__2E1BDC42">
+      <End Role="Province" EntitySet="Provinces" />
+      <End Role="Branch" EntitySet="Branches" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__Province__2F10007B" Association="Self.FK__Branch__Province__2F10007B">
+      <End Role="Province" EntitySet="Provinces" />
+      <End Role="Branch" EntitySet="Branches" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Branch__Province__300424B4" Association="Self.FK__Branch__Province__300424B4">
+      <End Role="Province" EntitySet="Provinces" />
+      <End Role="Branch" EntitySet="Branches" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Departmen__Branc__30F848ED" Association="Self.FK__Departmen__Branc__30F848ED">
+      <End Role="Branch" EntitySet="Branches" />
+      <End Role="Department" EntitySet="Departments" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
