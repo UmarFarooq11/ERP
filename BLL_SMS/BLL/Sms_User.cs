@@ -13,6 +13,7 @@ namespace BLL_SMS.BLL
 {
     public class Sms_User
     {
+        // Umar Farooque
         DBBridge ObjDb = new DBBridge();
         public int RowId { get; set; }
         public int UserId { get; set; }
